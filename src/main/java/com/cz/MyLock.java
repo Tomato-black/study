@@ -1,5 +1,6 @@
 package com.cz;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.Condition;
@@ -47,7 +48,7 @@ public class MyLock implements Lock {
 
     @Override
     public Condition newCondition() {
-        return null;
+        return sync.newCondition();
     }
 
     static final class MySync extends AbstractQueuedSynchronizer {
@@ -59,7 +60,9 @@ public class MyLock implements Lock {
             setExclusiveOwnerThread(null);
             acquire(0);
         }
-
+        public Condition newCondition() {
+            return new AbstractQueuedSynchronizer.ConditionObject();
+        }
         @Override
         protected final boolean tryAcquire(int acquires) {
             final Thread thread = Thread.currentThread();

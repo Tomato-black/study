@@ -27,7 +27,9 @@ public class MyLockTest {
 
         @Override
         public void run() {
-            while (!myLock.tryAcquire(1)) {
+            boolean b = myLock.tryAcquire(1);
+            if(!b){
+                return;
             }
             for (int i = 0; i < 100000; i++) {
                 tag++;
